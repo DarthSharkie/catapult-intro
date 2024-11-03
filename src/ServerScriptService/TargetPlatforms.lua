@@ -1,3 +1,4 @@
+--!strict
 
 local Workspace = game:GetService("Workspace")
 local ServerStorage = game:GetService("ServerStorage")
@@ -14,6 +15,16 @@ local TARGETS_PER_PLATFORM = TARGETS_PER_ROW * TARGETS_PER_COLUMN
 local X_SPACING = 7
 local Y_OFFSET_FLOOR = 9.907 -- Measured from in-game differences
 local Z_SPACING = 7
+
+export type Type = {
+    Reset: () -> nil,
+    SetupTargets: (Player) -> nil,
+}
+
+type BoundingBox = {
+    center: Vector3,
+    size: Vector3,
+}
 
 local TargetPlatform = {}
 TargetPlatform.__index = TargetPlatform
@@ -46,7 +57,7 @@ function TargetPlatform:Reset()
     self:SetupTargets()
 end
 
-local function doBoxesIntersect(boxA, boxB)
+local function doBoxesIntersect(boxA: BoundingBox, boxB: BoundingBox): boolean
     local dx = math.abs(boxA.center.X - boxB.center.X)
     local dy = math.abs(boxA.center.Y - boxB.center.Y)
     local dz = math.abs(boxA.center.Z - boxB.center.Z)
@@ -76,12 +87,12 @@ function TargetPlatform:SetupTargets(player: Player)
         self.platform:PivotTo(originFacingCFrame)
 
         -- Check if it will intersect with any other target platform
-        local centerCFrame, size = self.platform:GetBoundingBox()
+        local centerCFrame: CFrame, size = self.platform:GetBoundingBox()
         local center = centerCFrame.Position
         local newBox = {center = center, size = size}
         for _, existingPlatform in Workspace.ActiveTargetPlatforms:GetChildren() do
             if self.platform ~= existingPlatform then
-                local existingCFrame, existingSize = existingPlatform:GetBoundingBox()
+                local existingCFrame: CFrame, existingSize = existingPlatform:GetBoundingBox()
                 local existingBox = {center = existingCFrame.Position, size = existingSize}
                 collision = doBoxesIntersect(existingBox, newBox)
             end

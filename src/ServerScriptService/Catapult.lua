@@ -3,7 +3,6 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 -- modules
-local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
 local Projectile = require(ServerScriptService:WaitForChild("Projectile"))
 
 -- events
@@ -14,9 +13,9 @@ local catapultUnloadEvent = ServerScriptService:WaitForChild("CatapultUnloadEven
 local SPRING_TENSION_FACTOR = 5000
 local SPRING_TENSION_INITAL_VALUE = 25000
 local RELEASE_ANGLE_INITIAL_VALUE = -90
+local RELEASE_ANGLE_QUANTUM = 5
 local MOTOR_MAX_TORQUE = 10000000
 local CATAPULT_LAUNCH_RESET_TIME = ServerStorage.CatapultPlatform:GetAttribute("LaunchResetTime")
-local LAUNCH_ATTEMPTS_ATTRIBUTE_NAME = "LaunchAttempts"
 
 local PROJECTILES = {
     -- left side
@@ -35,8 +34,10 @@ local PROJECTILES = {
 local Catapult = {}
 Catapult.__index = Catapult
 
-function Catapult.new()
+function Catapult.new(userId: number)
     local self = setmetatable({}, Catapult)
+
+    self.Owner = userId
 
     -- init other stuff here
     self.platform = ServerStorage.CatapultPlatform:Clone()
@@ -99,7 +100,7 @@ function Catapult.new()
     for material, cframe in PROJECTILES do
         self.projectiles[material] = Projectile.new(material, true, cframe)
         self.projectiles[material]:SetParent(self.platform)
-        self.projectiles[material]:SetTrigger(function(projectile: Projectile, player: Player)
+        self.projectiles[material]:SetTrigger(function(projectile: Projectile.Type, player: Player)
             self:Load(projectile, player)
         end)
     end
@@ -118,10 +119,12 @@ function Catapult:Unload()
     self.payload:Destroy()
     self.payload = nil
 
+    self:EnableLaunchPrompt(false)
+
     catapultUnloadEvent:Fire()
 end
 
-function Catapult:Load(projectile: Projectile, player: Player)
+function Catapult:Load(projectile: Projectile.Type, player: Player)
     if self.payload then
         return
     end
@@ -134,7 +137,6 @@ function Catapult:Load(projectile: Projectile, player: Player)
 
     Workspace.Audio.Load:Play()
     
-    -- enable launch prompt
     self:EnableLaunchPrompt(true)
 end
 
@@ -179,23 +181,23 @@ end
 
 function Catapult:IncreaseSpringTension()
     if self.springTension < 75000 then
-        self.springTension = self.springTension + 5000
+        self.springTension = self.springTension + SPRING_TENSION_FACTOR
         self.springConstraint.Stiffness = self.springTension
-        self.tensionLabel = self.springTension / 5000
+        self.tensionLabel = self.springTension / SPRING_TENSION_FACTOR
     end
 end
 
 function Catapult:DecreaseSpringTension()
-    if self.springTension > 5000 then
-        self.springTension = self.springTension - 5000
+    if self.springTension > SPRING_TENSION_FACTOR then
+        self.springTension = self.springTension - SPRING_TENSION_FACTOR
         self.springConstraint.Stiffness = self.springTension
-        self.tensionLabel = self.springTension / 5000
+        self.tensionLabel = self.springTension / SPRING_TENSION_FACTOR
     end
 end
 
 function Catapult:IncreaseReleaseAngle()
     if self.releaseAngle > -150 then
-        self.releaseAngle = self.releaseAngle - 5
+        self.releaseAngle = self.releaseAngle - RELEASE_ANGLE_QUANTUM
         self.releaseAngleConstraint.LowerAngle = self.releaseAngle
         self.releaseAngleLabel = math.abs(self.releaseAngle)
     end
@@ -203,10 +205,17 @@ end
 
 function Catapult:DecreaseReleaseAngle()
     if self.releaseAngle < -10 then
-        self.releaseAngle = self.releaseAngle + 5
+        self.releaseAngle = self.releaseAngle + RELEASE_ANGLE_QUANTUM
         self.releaseAngleConstraint.LowerAngle = self.releaseAngle
         self.releaseAngleLabel = math.abs(self.releaseAngle)
     end
+end
+
+function Catapult:Destroy()
+    if self.payload then
+        self.payload:Destroy()
+    end
+    self.platform:Destroy()
 end
 
 return Catapult
