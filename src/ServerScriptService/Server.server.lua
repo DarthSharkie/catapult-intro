@@ -7,6 +7,7 @@ local TargetPlatform = require(ServerScriptService:WaitForChild("TargetPlatform"
 local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
 
 -- events
+local targetPlatformResetEvent = ServerScriptService:WaitForChild("TargetPlatformResetEvent")
 
 -- local data
 local catapults = {}
@@ -17,7 +18,10 @@ local targetPlatforms = {}
 local function onGameOver()
 end
 
-local function onGameReset()
+local function onTargetReset(player: Player)
+    for _, targetPlatform in targetPlatforms[player.UserId] do
+        targetPlatform:Reset(player)
+    end
 end
 
 local function initialize(player: Player)
@@ -49,6 +53,8 @@ end)
 
 -- TODO: Figure out if there's a better way to have LB connect to Catapult launch
 LeaderboardService:init()
+
+targetPlatformResetEvent.Event:Connect(onTargetReset)
 
 --[[  TODO List
 0. Reset target event hookup (feature parity)

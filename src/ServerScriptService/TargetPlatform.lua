@@ -15,11 +15,10 @@ local TARGETS_PER_PLATFORM = TARGETS_PER_ROW * TARGETS_PER_COLUMN
 local X_SPACING = 7
 local Y_OFFSET_FLOOR = 9.907 -- Measured from in-game differences
 local Z_SPACING = 7
-
-export type Type = {
-    Reset: () -> nil,
-    SetupTargets: (Player) -> nil,
-}
+local TARGET_WIDTH = 3
+local TARGET_HEIGHT_RANGE = {4, 22}
+local TARGET_DEPTH = 2
+local TARGET_PLATFORM_PADDING = Vector3.new(4, 4, TARGET_HEIGHT_RANGE[2])
 
 type BoundingBox = {
     center: Vector3,
@@ -35,6 +34,7 @@ function TargetPlatform.new(player: Player)
     self.Owner = player
 
     self.platform = ServerStorage.TargetPlatform:Clone()
+    self:SelectPosition()
     self.platform.Parent = Workspace.ActiveTargetPlatforms
 
     self.blocks = Instance.new("Folder")
@@ -46,7 +46,8 @@ function TargetPlatform.new(player: Player)
     return self
 end
 
-function TargetPlatform:Reset()
+function TargetPlatform:Reset(player: Player)
+    self.platform.Parent = nil
     if self.blocks then
         for _, block in self.blocks:GetChildren() do
             if block:IsA("BasePart") then
@@ -54,7 +55,10 @@ function TargetPlatform:Reset()
             end
         end
     end
-    self:SetupTargets()
+    self.platform.Parent = nil
+    self:SelectPosition()
+    self.platform.Parent = Workspace.ActiveTargetPlatforms
+    self:SetupTargets(player)
 end
 
 local function doBoxesIntersect(boxA: BoundingBox, boxB: BoundingBox): boolean
@@ -69,10 +73,7 @@ local function doBoxesIntersect(boxA: BoundingBox, boxB: BoundingBox): boolean
     return dx <= combinedHalfSizeX and dy <= combinedHalfSizeY and dz <= combinedHalfSizeZ
 end
 
-function TargetPlatform:SetupTargets(player: Player)
-    -- Will hold a series of tuples consisting of {center, size}
-    local originFacingCFrame 
-
+function TargetPlatform:SelectPosition()
     repeat
         local collision = false
         -- Generate platform coordinates
@@ -83,13 +84,16 @@ function TargetPlatform:SetupTargets(player: Player)
         local z = r * math.sin(theta)
 
         -- Have the target face the origin
-        originFacingCFrame = CFrame.lookAt(Vector3.new(x, y, z), Vector3.new(0, y, 0))
+        local originFacingCFrame = CFrame.lookAt(Vector3.new(x, y, z), Vector3.new(0, y, 0))
         self.platform:PivotTo(originFacingCFrame)
 
         -- Check if it will intersect with any other target platform
-        local centerCFrame: CFrame, size = self.platform:GetBoundingBox()
+        local centerCFrame: CFrame, size: Vector3 = self.platform:GetBoundingBox()
         local center = centerCFrame.Position
-        local newBox = {center = center, size = size}
+        local newBox = {
+            center = center,
+            size = size + TARGET_PLATFORM_PADDING
+        }
         for _, existingPlatform in Workspace.ActiveTargetPlatforms:GetChildren() do
             if self.platform ~= existingPlatform then
                 local existingCFrame: CFrame, existingSize = existingPlatform:GetBoundingBox()
@@ -98,24 +102,27 @@ function TargetPlatform:SetupTargets(player: Player)
             end
         end
     until not collision
+end
 
+function TargetPlatform:SetupTargets(player: Player)
+    local platformCFrame = self.platform:GetPivot()
     for i = 0, TARGETS_PER_PLATFORM - 1 do
         -- Trial of creating a new part relative to the platform
         local partX = ((i // TARGETS_PER_ROW) - ((TARGETS_PER_COLUMN - 1) / 2)) * X_SPACING
         local partZ = ((i % TARGETS_PER_ROW) - ((TARGETS_PER_ROW - 1) / 2)) * Z_SPACING
-        local partHeight = math.random(18) + 2
+        local partHeight = math.random(unpack(TARGET_HEIGHT_RANGE))
         local partY = Y_OFFSET_FLOOR + (partHeight / 2)
         
         local part = Instance.new("Part")
         part.Anchored = false
         part.Shape = Enum.PartType.Block
-        part.Size = Vector3.new(3, partHeight, 2)
-        part.CFrame = originFacingCFrame * CFrame.new(partX, partY, partZ)
-        part.Parent = self.blocks
+        part.Size = Vector3.new(TARGET_WIDTH, partHeight, TARGET_DEPTH)
+        part.CFrame = platformCFrame * CFrame.new(partX, partY, partZ)
         part.Material = Enum.Material.SmoothPlastic
         part.BrickColor = BrickColor.random()
         part.CanCollide = true
         part.Name = "BlockTarget" .. i
+        part.Parent = self.blocks
         -- ensure target parts physics are handled by the players client
         part:SetNetworkOwner(player)
     end

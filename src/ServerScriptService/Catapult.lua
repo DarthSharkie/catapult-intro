@@ -8,6 +8,7 @@ local Projectile = require(ServerScriptService:WaitForChild("Projectile"))
 -- events
 local catapultLaunchEvent = ServerScriptService:WaitForChild("CatapultLaunchEvent")
 local catapultUnloadEvent = ServerScriptService:WaitForChild("CatapultUnloadEvent")
+local targetPlatformResetEvent = ServerScriptService:WaitForChild("TargetPlatformResetEvent")
 
 -- local constants
 local SPRING_TENSION_FACTOR = 5000
@@ -56,7 +57,7 @@ function Catapult.new(userId: number)
 
     self.targetResetButton = self.platform.TargetResetButton.button
     self.targetResetButton.ProximityPrompt.Triggered:Connect(function(...)
-
+        targetPlatformResetEvent:Fire(...)
     end)
 
     self.reloadAttachment = self.platform.Catapult.Swivel.Armature.Att_Reload
