@@ -71,7 +71,7 @@ function Catapult.new(userId: number)
         self:DecreaseSpringTension(...)
     end)
     self.springConstraint = self.platform.Constraints.SpringConstraint
-    self.tensionLabel = self.springTensionButton.Console.SurfaceGui.Frame.PowerLabel 
+    self.powerLabel = self.springTensionButton.Console.SurfaceGui.Frame.PowerLabel
 
     -- Init, connect triggers, and alias release angle parts
     self.releaseAngle = RELEASE_ANGLE_INITIAL_VALUE
@@ -96,7 +96,7 @@ function Catapult.new(userId: number)
     self:EnableLaunchPrompt(false)
 
     -- Create template balls
-    self.projectiles = {}
+    self.projectiles = {} :: {[string]: Projectile.Type}
     for material, cframe in PROJECTILES do
         self.projectiles[material] = Projectile.new(material, true, cframe)
         self.projectiles[material]:SetParent(self.platform)
@@ -138,6 +138,9 @@ function Catapult:Load(projectile: Projectile.Type, player: Player)
     Workspace.Audio.Load:Play()
     
     self:EnableLaunchPrompt(true)
+    for _, projectile in self.projectiles do
+        projectile:DisableTrigger()
+    end
 end
 
 function Catapult:SetNetworkOwnerForLaunch(player: Player)
@@ -177,13 +180,19 @@ function Catapult:Launch(player: Player)
         -- reapply the torque to reset the catapult
         self.launcherHinge.MotorMaxTorque = MOTOR_MAX_TORQUE
     end)
+    -- Need just a little extra time so player can't load until the armature resets
+    task.delay(CATAPULT_LAUNCH_RESET_TIME + 0.5, function()
+        for _, projectile in self.projectiles do
+            projectile:EnableTrigger()
+        end
+    end)
 end
 
 function Catapult:IncreaseSpringTension()
     if self.springTension < 75000 then
         self.springTension = self.springTension + SPRING_TENSION_FACTOR
         self.springConstraint.Stiffness = self.springTension
-        self.tensionLabel = self.springTension / SPRING_TENSION_FACTOR
+        self.powerLabel.Text = self.springTension / SPRING_TENSION_FACTOR
     end
 end
 
@@ -191,7 +200,7 @@ function Catapult:DecreaseSpringTension()
     if self.springTension > SPRING_TENSION_FACTOR then
         self.springTension = self.springTension - SPRING_TENSION_FACTOR
         self.springConstraint.Stiffness = self.springTension
-        self.tensionLabel = self.springTension / SPRING_TENSION_FACTOR
+        self.powerLabel.Text = self.springTension / SPRING_TENSION_FACTOR
     end
 end
 
@@ -199,7 +208,7 @@ function Catapult:IncreaseReleaseAngle()
     if self.releaseAngle > -150 then
         self.releaseAngle = self.releaseAngle - RELEASE_ANGLE_QUANTUM
         self.releaseAngleConstraint.LowerAngle = self.releaseAngle
-        self.releaseAngleLabel = math.abs(self.releaseAngle)
+        self.releaseAngleLabel.Text = math.abs(self.releaseAngle)
     end
 end
 
@@ -207,7 +216,7 @@ function Catapult:DecreaseReleaseAngle()
     if self.releaseAngle < -10 then
         self.releaseAngle = self.releaseAngle + RELEASE_ANGLE_QUANTUM
         self.releaseAngleConstraint.LowerAngle = self.releaseAngle
-        self.releaseAngleLabel = math.abs(self.releaseAngle)
+        self.releaseAngleLabel.Text = math.abs(self.releaseAngle)
     end
 end
 

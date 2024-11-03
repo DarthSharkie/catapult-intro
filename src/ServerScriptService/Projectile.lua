@@ -5,6 +5,7 @@ export type Type = {
     Instance: Instance,
     SetParent: (Instance) -> nil,
     SetTrigger: ((Type, Player) -> nil) -> nil,
+    EnableTrigger: () -> nil,
     DisableTrigger: () -> nil,
     Destroy: () -> nil,
 }
@@ -57,6 +58,10 @@ function Projectile:SetTrigger(fn: (Type, Player) -> nil)
     self.Instance.ProximityPrompt.Triggered:Connect(function(player: Player)
         fn(self, player)
     end)
+end
+
+function Projectile:EnableTrigger()
+    self.Instance.ProximityPrompt.Enabled = true
 end
 
 function Projectile:DisableTrigger()
