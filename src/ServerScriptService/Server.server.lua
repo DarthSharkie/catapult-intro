@@ -3,7 +3,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 -- modules
 local Catapult = require(ServerScriptService:WaitForChild("Catapult"))
-local TargetPlatform = require(ServerScriptService:WaitForChild("TargetPlatforms"))
+local TargetPlatform = require(ServerScriptService:WaitForChild("TargetPlatform"))
 local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
 
 -- events
@@ -18,7 +18,6 @@ local function onGameOver()
 end
 
 local function onGameReset()
-
 end
 
 local function initialize(player: Player)
