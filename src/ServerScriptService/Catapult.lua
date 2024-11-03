@@ -15,7 +15,9 @@ local SPRING_TENSION_INITAL_VALUE = 25000
 local RELEASE_ANGLE_INITIAL_VALUE = -90
 local RELEASE_ANGLE_QUANTUM = 5
 local MOTOR_MAX_TORQUE = 10000000
-local CATAPULT_LAUNCH_RESET_TIME = ServerStorage.CatapultPlatform:GetAttribute("LaunchResetTime")
+local CATAPULT_LAUNCH_RESET_TIME = 1
+local ARMATURE_RESET_TIME = CATAPULT_LAUNCH_RESET_TIME + 0.4 -- add'l time to tension spring
+local PROJECTILE_LIFETIME = 10
 
 local PROJECTILES = {
     -- left side
@@ -174,17 +176,20 @@ function Catapult:Launch(player: Player)
     self.launcherHinge.MotorMaxTorque = 0
     Workspace.Audio.Launch:Play()
     
+    local launchedProjectile = self.payload
     self.payload = nil
 
     task.delay(CATAPULT_LAUNCH_RESET_TIME, function()
         -- reapply the torque to reset the catapult
         self.launcherHinge.MotorMaxTorque = MOTOR_MAX_TORQUE
     end)
-    -- Need just a little extra time so player can't load until the armature resets
-    task.delay(CATAPULT_LAUNCH_RESET_TIME + 0.5, function()
+    task.delay(ARMATURE_RESET_TIME, function()
         for _, projectile in self.projectiles do
             projectile:EnableTrigger()
         end
+    end)
+    task.delay(PROJECTILE_LIFETIME, function()
+        launchedProjectile:Destroy()
     end)
 end
 
