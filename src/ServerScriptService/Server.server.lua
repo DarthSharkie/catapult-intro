@@ -11,7 +11,6 @@ local SpawnPool = require(ServerScriptService:WaitForChild("SpawnPool"))
 local targetPlatformResetEvent = ServerScriptService:WaitForChild("TargetPlatformResetEvent")
 
 -- local data
-local spawnPool = SpawnPool.new()
 local catapults = {}
 local targetPlatforms = {}
 
@@ -38,8 +37,8 @@ local function initialize(player: Player)
         end
     end)
 
-    local spawnCFrame: CFrame = spawnPool:Allocate(player)
-    catapults[player.UserId] = Catapult.new(player, spawnCFrame)
+    local spawn: SpawnPool.Spawn = SpawnPool:Allocate(player)
+    catapults[player.UserId] = Catapult.new(player, spawn.CFrame)
 
     targetPlatforms[player.UserId] = {
         TargetPlatform.new(player), 
@@ -59,8 +58,12 @@ local function cleanup(player: Player)
         targetPlatform:Destroy()
     end
     LeaderboardService:removePlayer(player)
-    spawnPool:Return(player)
+    SpawnPool:Return(player)
 end
+
+-- TODO: Figure out if there's a better way to have LB connect to Catapult launch
+LeaderboardService:init()
+SpawnPool:Init()
 
 Players.PlayerAdded:Connect(function(player: Player) 
     initialize(player)
@@ -69,9 +72,6 @@ end)
 Players.PlayerRemoving:Connect(function(player: Player)
     cleanup(player)
 end)
-
--- TODO: Figure out if there's a better way to have LB connect to Catapult launch
-LeaderboardService:init()
 
 targetPlatformResetEvent.Event:Connect(onTargetReset)
 

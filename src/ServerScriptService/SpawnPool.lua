@@ -11,9 +11,7 @@ local R_DISTANCE = 90
 local spawns = {}
 local TAU = math.pi * 2
 
-function SpawnPool.new()
-    local self = setmetatable({}, SpawnPool)
-
+function SpawnPool:Init()
     for point = 1, SIZE do
         local theta = ((point - 1) * 2 + 1) / (2 * SIZE) * TAU  -- e.g., 1/12, 3/12, 5/12, etc.
         local spawnPosition = Vector3.new(R_DISTANCE * math.cos(theta), 0, R_DISTANCE * math.sin(theta))
@@ -28,7 +26,7 @@ function SpawnPool.new()
     return self
 end
 
-function SpawnPool:Allocate(player: Player): CFrame
+function SpawnPool:Allocate(player: Player): Spawn
     local choice
     repeat 
         choice = math.random(1, #spawns)
