@@ -41,8 +41,8 @@ local function initialize(player: Player)
     catapults[player.UserId] = Catapult.new(player, spawn.CFrame)
 
     targetPlatforms[player.UserId] = {
-        TargetPlatform.new(player), 
-        TargetPlatform.new(player)
+        TargetPlatform.new(player, spawn.Index),
+        TargetPlatform.new(player, spawn.Index),
     }
 
     LeaderboardService:addPlayer(player)
@@ -65,7 +65,7 @@ end
 LeaderboardService:init()
 SpawnPool:Init()
 
-Players.PlayerAdded:Connect(function(player: Player) 
+Players.PlayerAdded:Connect(function(player: Player)
     initialize(player)
 end)
 

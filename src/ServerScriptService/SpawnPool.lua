@@ -9,7 +9,8 @@ export type Spawn = {
     Index: number,
 }
 
-local SIZE = 6
+SpawnPool.SIZE = 6
+local SIZE = SpawnPool.SIZE
 local R_DISTANCE = 90
 local spawns = {}
 local TAU = math.pi * 2

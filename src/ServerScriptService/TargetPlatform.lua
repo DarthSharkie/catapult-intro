@@ -3,6 +3,8 @@
 local Workspace = game:GetService("Workspace")
 local ServerStorage = game:GetService("ServerStorage")
 
+local SpawnPool = require(game:GetService("ServerScriptService"):WaitForChild("SpawnPool"))
+
 local R_MIN = 160 
 local R_RANGE = 140 -- x, z in [160, 300)
 local TAU = 2 * math.pi
@@ -18,7 +20,7 @@ local Z_SPACING = 7
 local TARGET_WIDTH = 3
 local TARGET_HEIGHT_RANGE = {4, 22}
 local TARGET_DEPTH = 2
-local TARGET_PLATFORM_PADDING = Vector3.new(4, 4, TARGET_HEIGHT_RANGE[2])
+local TARGET_PLATFORM_PADDING = Vector3.new(4, TARGET_HEIGHT_RANGE[2], 4)
 
 type BoundingBox = {
     center: Vector3,
@@ -27,13 +29,17 @@ type BoundingBox = {
 
 local TargetPlatform = {}
 TargetPlatform.__index = TargetPlatform
+TargetPlatform.count = 0
 
-function TargetPlatform.new(player: Player)
+function TargetPlatform.new(player: Player, slice: number)
     local self = setmetatable({}, TargetPlatform)
 
     self.Owner = player
+    self.slice = slice
 
     self.platform = ServerStorage.TargetPlatform:Clone()
+    TargetPlatform.count += 1
+    self.platform.Name = "TP" .. TargetPlatform.count
     self:SelectPosition()
     self.platform.Parent = Workspace.ActiveTargetPlatforms
 
@@ -78,10 +84,10 @@ function TargetPlatform:SelectPosition()
         local collision = false
         -- Generate platform coordinates
         local r = R_MIN + R_RANGE * math.random()
-        local theta = TAU * math.random()
-        local x = r * math.cos(theta)
+        local theta = TAU / SpawnPool.SIZE * (self.slice - 1 + math.random())
+        local x = r * math.sin(theta)
         local y = Y_MIN + Y_RANGE * math.random()
-        local z = r * math.sin(theta)
+        local z = r * math.cos(theta)
 
         -- Have the target face the origin
         local originFacingCFrame = CFrame.lookAt(Vector3.new(x, y, z), Vector3.new(0, y, 0))
@@ -99,6 +105,7 @@ function TargetPlatform:SelectPosition()
                 local existingCFrame: CFrame, existingSize = existingPlatform:GetBoundingBox()
                 local existingBox = {center = existingCFrame.Position, size = existingSize}
                 collision = doBoxesIntersect(existingBox, newBox)
+                if collision then break end
             end
         end
     until not collision
