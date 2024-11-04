@@ -5,8 +5,8 @@ local ServerStorage = game:GetService("ServerStorage")
 
 local SpawnPool = require(game:GetService("ServerScriptService"):WaitForChild("SpawnPool"))
 
-local R_MIN = 160 
-local R_RANGE = 140 -- x, z in [160, 300)
+local R_MIN = 100
+local R_RANGE = 140 -- x, z in [100, 240) + 60 (preventing collision with dividers)
 local TAU = 2 * math.pi
 local Y_MIN = 4
 local Y_RANGE = 28 -- y in [4, 32)
@@ -46,7 +46,7 @@ function TargetPlatform.new(player: Player, slice: number)
     self.blocks = Instance.new("Folder")
     self.blocks.Name = "Blocks"
     self.blocks.Parent = self.platform
-    
+
     self:SetupTargets(player)
 
     return self
@@ -85,9 +85,9 @@ function TargetPlatform:SelectPosition()
         -- Generate platform coordinates
         local r = R_MIN + R_RANGE * math.random()
         local theta = TAU / SpawnPool.SIZE * (self.slice - 1 + math.random())
-        local x = r * math.sin(theta)
+        local x = r * math.sin(theta) + 60 * math.sin((2*self.slice - 1) / (2*SpawnPool.SIZE) * TAU)
         local y = Y_MIN + Y_RANGE * math.random()
-        local z = r * math.cos(theta)
+        local z = r * math.cos(theta) + 60 * math.cos((2*self.slice - 1) / (2*SpawnPool.SIZE) * TAU)
 
         -- Have the target face the origin
         local originFacingCFrame = CFrame.lookAt(Vector3.new(x, y, z), Vector3.new(0, y, 0))
@@ -119,7 +119,7 @@ function TargetPlatform:SetupTargets(player: Player)
         local partZ = ((i % TARGETS_PER_ROW) - ((TARGETS_PER_ROW - 1) / 2)) * Z_SPACING
         local partHeight = math.random(unpack(TARGET_HEIGHT_RANGE))
         local partY = Y_OFFSET_FLOOR + (partHeight / 2)
-        
+
         local part = Instance.new("Part")
         part.Anchored = false
         part.Shape = Enum.PartType.Block

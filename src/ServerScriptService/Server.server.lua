@@ -79,7 +79,8 @@ targetPlatformResetEvent.Event:Connect(onTargetReset)
 1. [x]Allow for multiple spawns
 2. Prevent overlapping catapult fire (4-6 per server to allow for enough range of motion)
    - [x] will need to limit catapult rotation
-   - will need to limit target platform theta
+   - [x] will need to limit target platform theta
+   - [x] Need to adjust position to ensure the entire platform is inside the slice
 3. Detect targets knocked over (if they're still standing, it doesn't count)
 4. Save number of launches, number of targets "destroyed" to cloud
 5. Consider badges/achievements for number of launches, number of targets
