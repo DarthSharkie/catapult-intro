@@ -4,10 +4,10 @@
         "Density": 0.3,
         "Offset": 0.25,
         "Color": {
-            "Color3uint8": [199, 199, 199]
+            "Color3": [0.78, 0.78, 0.78]
         },
         "Decay": {
-            "Color3uint8": [106, 112, 125]
+            "Color3": [0.415, 0.439, 0.49]
         },
         "Glare": 0,
         "Haze": 0
