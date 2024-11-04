@@ -61,8 +61,7 @@ LeaderboardService:init()
 targetPlatformResetEvent.Event:Connect(onTargetReset)
 
 --[[  TODO List
-0. Reset target event hookup (feature parity)
-1. Allow for multiple spawns
+1. [x]Allow for multiple spawns
 2. Prevent overlapping catapult fire (4-6 per server to allow for enough range of motion)
    - will need to limit catapult rotation
    - will need to limit target platform theta

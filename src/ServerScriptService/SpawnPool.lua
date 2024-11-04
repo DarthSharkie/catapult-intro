@@ -6,7 +6,7 @@ type Spawn = {
     owner: number,
 }
 
-local SIZE = 6
+SIZE = 6
 local R_DISTANCE = 80
 local spawns = {}
 local TAU = math.pi * 2

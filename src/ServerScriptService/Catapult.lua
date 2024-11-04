@@ -22,15 +22,15 @@ local PROJECTILE_LIFETIME = 10
 
 local PROJECTILES = {
     -- left side
-    Ice = CFrame.new(23.74, 16.29, -3.45),
-    Wood = CFrame.new(24.94, 16.195, 1.05),
-    Marble = CFrame.new(24.744, 16.195, 5.55),
-    Leather = CFrame.new(23.544, 16.395, 10.05),
+    Ice = CFrame.new(23.87, 2.07, -2.79),
+    Wood = CFrame.new(24.76, 2.04, 1.32),
+    Marble = CFrame.new(24.904, 2.04, 5.46),
+    Leather = CFrame.new(24.33, 2.04, 9.82),
     -- right side
-    Plastic = CFrame.new(-24.456, 15.995, -3.45),
-    Rubber = CFrame.new(-25.156, 15.995, 1.05),
-    Rock = CFrame.new(-25.156, 15.995, 5.55),
-    Glass = CFrame.new(-24.756, 15.995, 10.05),
+     Plastic = CFrame.new(-24.097, 1.886, -2.53),
+     Rubber = CFrame.new(-24.999, 1.872, 1.98),
+     Rock = CFrame.new(-24.99, 1.862, 6.47),
+     Glass = CFrame.new(-24.190, 1.823, 10.986),
 }
 
 
@@ -100,8 +100,9 @@ function Catapult.new(userId: number, cframe: CFrame)
 
     -- Create template balls
     self.projectiles = {} :: {[string]: Projectile.Type}
-    for material, cframe in PROJECTILES do
-        self.projectiles[material] = Projectile.new(material, true, cframe)
+    for material, projectileCFrame in PROJECTILES do
+        local derivedCFrame = cframe * projectileCFrame
+        self.projectiles[material] = Projectile.new(material, true, derivedCFrame)
         self.projectiles[material]:SetParent(self.platform)
         self.projectiles[material]:SetTrigger(function(projectile: Projectile.Type, player: Player)
             self:Load(projectile, player)

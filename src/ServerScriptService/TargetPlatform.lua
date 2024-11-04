@@ -3,8 +3,8 @@
 local Workspace = game:GetService("Workspace")
 local ServerStorage = game:GetService("ServerStorage")
 
-local R_MIN = 75
-local R_RANGE = 125 -- x, z in [75, 200)
+local R_MIN = 160 
+local R_RANGE = 140 -- x, z in [160, 300)
 local TAU = 2 * math.pi
 local Y_MIN = 4
 local Y_RANGE = 28 -- y in [4, 32)
