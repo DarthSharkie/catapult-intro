@@ -45,10 +45,11 @@ local function initialize(player: Player)
         TargetPlatform.new(player), 
         TargetPlatform.new(player)
     }
-    
+
     LeaderboardService:addPlayer(player)
 
     -- Ensure this happens after creating the Catapult, so the spawn point exists
+    player.RespawnLocation = catapults[player.UserId]:GetSpawn()
     player:LoadCharacter()
 end
 
