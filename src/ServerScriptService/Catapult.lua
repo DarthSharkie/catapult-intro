@@ -104,8 +104,8 @@ function Catapult.new(player: Player, cframe: CFrame)
         local derivedCFrame = cframe * projectileCFrame
         self.projectiles[material] = Projectile.new(material, true, derivedCFrame)
         self.projectiles[material]:SetParent(self.platform)
-        self.projectiles[material]:SetTrigger(function(projectile: Projectile.Type, player: Player)
-            self:Load(projectile, player)
+        self.projectiles[material]:SetTrigger(function(projectile: Projectile.Type, player_: Player)
+            self:Load(projectile, player_)
         end)
     end
 
@@ -146,8 +146,8 @@ function Catapult:Load(projectile: Projectile.Type, player: Player)
     Workspace.Audio.Load:Play()
     
     self:EnableLaunchPrompt(true)
-    for _, projectile in self.projectiles do
-        projectile:DisableTrigger()
+    for _, projectileTemplate in self.projectiles do
+        projectileTemplate:DisableTrigger()
     end
 end
 
