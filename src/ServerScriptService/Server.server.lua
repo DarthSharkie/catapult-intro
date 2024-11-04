@@ -27,8 +27,19 @@ local function onTargetReset(player: Player)
 end
 
 local function initialize(player: Player)
-    local cframe = spawnPool:Allocate(player)
-    catapults[player.UserId] = Catapult.new(player.UserId, cframe)
+    -- Ensure this connection happens before spawning the character!
+    player.CharacterAdded:Connect(function(character)
+        local humanoid = character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.Died:Connect(function()
+                wait(3)
+                player:LoadCharacter()
+            end)
+        end
+    end)
+
+    local spawnCFrame: CFrame = spawnPool:Allocate(player)
+    catapults[player.UserId] = Catapult.new(player, spawnCFrame)
 
     targetPlatforms[player.UserId] = {
         TargetPlatform.new(player), 
@@ -36,6 +47,9 @@ local function initialize(player: Player)
     }
     
     LeaderboardService:addPlayer(player)
+
+    -- Ensure this happens after creating the Catapult, so the spawn point exists
+    player:LoadCharacter()
 end
 
 local function cleanup(player: Player)

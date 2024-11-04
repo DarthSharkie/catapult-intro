@@ -37,10 +37,10 @@ local PROJECTILES = {
 local Catapult = {}
 Catapult.__index = Catapult
 
-function Catapult.new(userId: number, cframe: CFrame)
+function Catapult.new(player: Player, cframe: CFrame)
     local self = setmetatable({}, Catapult)
 
-    self.Owner = userId
+    self.Owner = player
 
     -- init other stuff here
     self.platform = ServerStorage.CatapultPlatform:Clone()
@@ -110,6 +110,10 @@ function Catapult.new(userId: number, cframe: CFrame)
     end
 
     return self
+end
+
+function Catapult:GetSpawn(): Instance
+    return self.platform.Spawn
 end
 
 function Catapult:EnableLaunchPrompt(isEnabled: boolean)
