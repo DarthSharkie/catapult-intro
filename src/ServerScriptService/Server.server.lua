@@ -5,17 +5,19 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Catapult = require(ServerScriptService:WaitForChild("Catapult"))
 local TargetPlatform = require(ServerScriptService:WaitForChild("TargetPlatform"))
 local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
+local SpawnPool = require(ServerScriptService:WaitForChild("SpawnPool"))
 
 -- events
 local targetPlatformResetEvent = ServerScriptService:WaitForChild("TargetPlatformResetEvent")
 
 -- local data
+local spawnPool = SpawnPool.new()
 local catapults = {}
 local targetPlatforms = {}
 
 -- local constants
 
-local function onGameOver()
+local function _onGameOver()
 end
 
 local function onTargetReset(player: Player)
@@ -25,7 +27,8 @@ local function onTargetReset(player: Player)
 end
 
 local function initialize(player: Player)
-    catapults[player.UserId] = Catapult.new(player.UserId)
+    local cframe = spawnPool:Allocate(player)
+    catapults[player.UserId] = Catapult.new(player.UserId, cframe)
 
     targetPlatforms[player.UserId] = {
         TargetPlatform.new(player), 
@@ -41,6 +44,7 @@ local function cleanup(player: Player)
         targetPlatform:Destroy()
     end
     LeaderboardService:removePlayer(player)
+    spawnPool:Return(player)
 end
 
 Players.PlayerAdded:Connect(function(player: Player) 

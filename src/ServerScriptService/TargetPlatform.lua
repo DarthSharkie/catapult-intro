@@ -128,4 +128,8 @@ function TargetPlatform:SetupTargets(player: Player)
     end
 end
 
+function TargetPlatform:Destroy()
+    self.platform:Destroy()
+end
+
 return TargetPlatform

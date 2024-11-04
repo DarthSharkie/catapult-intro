@@ -37,14 +37,14 @@ local PROJECTILES = {
 local Catapult = {}
 Catapult.__index = Catapult
 
-function Catapult.new(userId: number)
+function Catapult.new(userId: number, cframe: CFrame)
     local self = setmetatable({}, Catapult)
 
     self.Owner = userId
 
     -- init other stuff here
     self.platform = ServerStorage.CatapultPlatform:Clone()
-    self.platform:PivotTo(CFrame.new(0, 14, 0))
+    self.platform:PivotTo(cframe)
     self.platform.Parent = Workspace.ActiveCatapultPlatforms
 
     self.armature = self.platform.Catapult.Swivel.Armature
