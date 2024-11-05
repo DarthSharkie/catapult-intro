@@ -18,11 +18,12 @@
     },
     "ServerStorage": {
       "$className": "ServerStorage",
-      "$ignoreUnknownInstances": true,
       "$path": "src/ServerStorage"
     },
     "Workspace": {
       "$className": "Workspace",
+      "$ignoreUnknownInstances": true,
+      "$path": "src/Workspace",
       "$properties": {
         "Gravity": 196.2,
         "AirDensity": 0.0012
