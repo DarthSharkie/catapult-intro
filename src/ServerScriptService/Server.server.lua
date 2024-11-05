@@ -45,7 +45,7 @@ local function initialize(player: Player)
         TargetPlatform.new(player, spawn.Index),
     }
 
-    LeaderboardService:addPlayer(player)
+    LeaderboardService.addPlayer(player)
 
     -- Ensure this happens after creating the Catapult, so the spawn point exists
     player.RespawnLocation = catapults[player.UserId]:GetSpawn()
@@ -57,12 +57,12 @@ local function cleanup(player: Player)
     for _, targetPlatform in targetPlatforms[player.UserId] do
         targetPlatform:Destroy()
     end
-    LeaderboardService:removePlayer(player)
+    LeaderboardService.removePlayer(player)
     SpawnPool:Return(player)
 end
 
 -- TODO: Figure out if there's a better way to have LB connect to Catapult launch
-LeaderboardService:init()
+LeaderboardService.Init()
 SpawnPool:Init()
 
 Players.PlayerAdded:Connect(function(player: Player)

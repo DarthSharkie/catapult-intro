@@ -153,7 +153,7 @@ function TargetPlatform:SetupTargets(player: Player)
             self.yStarts[blockName] = nil
         end
         if #blocksDestroyed > 0 then
-            LeaderboardService:BlocksDestroyed(player, #blocksDestroyed)
+            LeaderboardService.BlocksDestroyed(player, #blocksDestroyed)
         end
         if not next(self.yStarts) then
             knockedOver:Disconnect()

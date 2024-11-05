@@ -1,16 +1,57 @@
 -- Services
+local DataStoreService = game:GetService("DataStoreService")
+local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 -- Events
 local catapultLaunchEvent = ServerScriptService:WaitForChild("CatapultLaunchEvent")
 
 -- local data
-local shotsFiredValues: {[number]: IntValue} = {}
+local playerRecords: {[number]: PlayerRecord} = {}
 local blocksDestroyedValues: {[number]: IntValue} = {}
+local shotsFiredValues: {[number]: IntValue} = {}
+local PlayerData = DataStoreService:GetDataStore("PlayerData")
+
+type PlayerRecord = {
+    shotsFired: number,
+    blocksDestroyed: number,
+}
+
+local function newPlayerRecord(): PlayerRecord
+    return {
+        shotsFired = 0,
+        blocksDestroyed = 0,
+    }
+end
 
 local LeaderboardService = {}
 
-function LeaderboardService:addPlayer(player: Player)
+local function LoadData(player: Player): (boolean, any)
+    local success: boolean, result: any = pcall(function()
+        return PlayerData:GetAsync(player.UserId)
+    end)
+    if not success then
+        warn(result)
+    end
+    return success, result
+end
+
+local function SaveData(player: Player, data: PlayerRecord): boolean
+    local success: boolean, result: any = pcall(function()
+        PlayerData:SetAsync(player.UserId, data)
+    end)
+    if not success then
+        warn(result)
+    end
+    return success
+end
+
+function LeaderboardService.addPlayer(player: Player)
+
+    local success: boolean, result: any = LoadData(player)
+    local playerRecord: PlayerRecord = success and result :: PlayerRecord or newPlayerRecord()
+    playerRecords[player.UserId] = playerRecord
+
     local stats = player:FindFirstChild("leaderstats")
     if not stats then
         stats = Instance.new("Folder")
@@ -22,37 +63,51 @@ function LeaderboardService:addPlayer(player: Player)
     if not shotsFired then
         shotsFired = Instance.new("IntValue")
         shotsFired.Parent = stats
-        shotsFired.Name = "Shots Fired"
-        shotsFired.Value = 0
+        shotsFired.Name = "Fired"
+        shotsFired.Value = playerRecord.shotsFired
     end
 
     local blocksDestroyed = stats:FindFirstChild("BlocksDestroyed")
     if not blocksDestroyed then
         blocksDestroyed = Instance.new("IntValue")
         blocksDestroyed.Parent = stats
-        blocksDestroyed.Name = "Blocks Destroyed"
-        blocksDestroyed.Value = 0
+        blocksDestroyed.Name = "Destroyed"
+        blocksDestroyed.Value = playerRecord.blocksDestroyed
     end
 
     shotsFiredValues[player.UserId] = shotsFired
     blocksDestroyedValues[player.UserId] = blocksDestroyed
 end
 
-function LeaderboardService:removePlayer(player: Player)
+function LeaderboardService.removePlayer(player: Player)
+    -- Don't remove from the table in case of failure; let OnClose try again
+    SaveData(player, playerRecords[player.UserId])
+
+    blocksDestroyedValues[player.UserId] = nil
     shotsFiredValues[player.UserId] = nil
 end
 
 local function onCatapultLaunch(_payload, player: Player)
     shotsFiredValues[player.UserId].Value += 1
+    playerRecords[player.UserId].shotsFired += 1
 end
 
-function LeaderboardService:BlocksDestroyed(player: Player, count: number)
+function LeaderboardService.BlocksDestroyed(player: Player, count: number)
     blocksDestroyedValues[player.UserId].Value += count
+    playerRecords[player.UserId].blocksDestroyed += count
 end
 
-function LeaderboardService:init()
+local function OnClose()
+    for _, player in Players:GetPlayers() do
+        SaveData(player, playerRecords[player.UserId])
+    end
+end
+
+function LeaderboardService.Init()
     -- Handle value modifications
     catapultLaunchEvent.Event:Connect(onCatapultLaunch)
+
+    game:BindToClose(OnClose)
 end
 
 return LeaderboardService
