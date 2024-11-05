@@ -81,7 +81,7 @@ targetPlatformResetEvent.Event:Connect(onTargetReset)
    - [x] will need to limit catapult rotation
    - [x] will need to limit target platform theta
    - [x] Need to adjust position to ensure the entire platform is inside the slice
-3. Detect targets knocked over (if they're still standing, it doesn't count)
+3. [x]Detect targets knocked over (if they're still standing, it doesn't count)
 4. Save number of launches, number of targets "destroyed" to cloud
 5. Consider badges/achievements for number of launches, number of targets
 6. Figure out how to fully-manage via Rojo... model export from studio didn't work
@@ -96,4 +96,6 @@ targetPlatformResetEvent.Event:Connect(onTargetReset)
    - Buy currency pack(s)
    - Auto-target?
    - Auto-fire?
+9. Misc improvements
+   - cylindrical bounding box detection for platforms (as long as they're cylinders)
 ]]

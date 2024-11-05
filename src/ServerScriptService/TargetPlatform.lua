@@ -157,6 +157,9 @@ function TargetPlatform:SetupTargets(player: Player)
         end
         if not next(self.yStarts) then
             knockedOver:Disconnect()
+            task.delay(3, function()
+                self:Reset(player)
+            end)
         end
     end
     knockedOver = RunService.Heartbeat:Connect(check)
