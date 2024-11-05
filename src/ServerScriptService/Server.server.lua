@@ -16,6 +16,9 @@ local targetPlatforms = {}
 
 -- local constants
 
+-- Nix the baseplate
+workspace.Baseplate:Destroy()
+
 local function _onGameOver()
 end
 

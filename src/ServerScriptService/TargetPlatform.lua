@@ -11,8 +11,8 @@ local SpawnPool = require(game:GetService("ServerScriptService"):WaitForChild("S
 local R_MIN = 100
 local R_RANGE = 140 -- x, z in [100, 240) + 60 (preventing collision with dividers)
 local TAU = 2 * math.pi
-local Y_MIN = 4
-local Y_RANGE = 28 -- y in [4, 32)
+local Y_MIN = 6
+local Y_RANGE = 26 -- y in [6, 32)
 
 local TARGETS_PER_ROW = 5
 local TARGETS_PER_COLUMN = 6
@@ -95,15 +95,22 @@ function TargetPlatform:SelectPosition()
 
         -- Have the target face the origin
         local originFacingCFrame = CFrame.lookAt(Vector3.new(x, y, z), Vector3.new(0, y, 0))
+
+        -- Make sure target doesn't collide with terrain
+        local raycastResult = workspace:Raycast(originFacingCFrame.Position, -Vector3.yAxis * Y_MIN)
+        if raycastResult then
+            originFacingCFrame *= CFrame.new(0, Y_MIN - raycastResult.Distance, 0)
+        end
         self.platform:PivotTo(originFacingCFrame)
 
         -- Check if it will intersect with any other target platform
         local centerCFrame: CFrame, size: Vector3 = self.platform:GetBoundingBox()
-        local center = centerCFrame.Position
-        local newBox = {
-            center = center,
-            size = size + TARGET_PLATFORM_PADDING
-        }
+        -- Move the center up by half the Y-value, since the ExtentCFrame.Position
+        local center = centerCFrame.Position + Vector3.new(0, TARGET_HEIGHT_RANGE[2] / 2, 0)
+        -- Pad the platform assuming dimensions of target parts
+        size += TARGET_PLATFORM_PADDING
+
+        local newBox = {center = center, size = size}
         for _, existingPlatform in Workspace.ActiveTargetPlatforms:GetChildren() do
             if self.platform ~= existingPlatform then
                 local existingCFrame: CFrame, existingSize = existingPlatform:GetBoundingBox()

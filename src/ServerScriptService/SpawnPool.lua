@@ -33,6 +33,10 @@ function SpawnPool.Init()
             Index = point,
         }
 
+        -- The terrain is generally grassy, but grass blades should not poke through the platform feet.
+        -- Therefore, create a cylinder of Ground, as if the land was cleared.  Height == 4 because of voxels.
+        workspace.Terrain:FillCylinder(CFrame.new(spawnPosition.X, -2, spawnPosition.Z), 4, 45, Enum.Material.Ground)
+
         local divider = Instance.new("Part")
         divider.Name = "Divider" .. point
         divider.Shape = Enum.PartType.Block
