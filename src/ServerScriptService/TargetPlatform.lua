@@ -1,8 +1,11 @@
 --!strict
 
 local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
+local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
 local SpawnPool = require(game:GetService("ServerScriptService"):WaitForChild("SpawnPool"))
 
 local R_MIN = 100
@@ -18,7 +21,7 @@ local X_SPACING = 7
 local Y_OFFSET_FLOOR = 9.907 -- Measured from in-game differences
 local Z_SPACING = 7
 local TARGET_WIDTH = 3
-local TARGET_HEIGHT_RANGE = {4, 22}
+local TARGET_HEIGHT_RANGE = {5, 22}
 local TARGET_DEPTH = 2
 local TARGET_PLATFORM_PADDING = Vector3.new(4, TARGET_HEIGHT_RANGE[2], 4)
 
@@ -47,6 +50,7 @@ function TargetPlatform.new(player: Player, slice: number)
     self.blocks.Name = "Blocks"
     self.blocks.Parent = self.platform
 
+    self.yStarts = {} :: {[string]: number}
     self:SetupTargets(player)
 
     return self
@@ -132,7 +136,30 @@ function TargetPlatform:SetupTargets(player: Player)
         part.Parent = self.blocks
         -- ensure target parts physics are handled by the players client
         part:SetNetworkOwner(player)
+
+        self.yStarts[part.Name] = part.CFrame.Y
     end
+
+    local knockedOver: RBXScriptConnection
+    local function check()
+        local blocksDestroyed = {}
+        for blockName, startingY in self.yStarts do
+            local block = self.blocks:FindFirstChild(blockName)
+            if block and block:IsA("Part") and block.CFrame.Y <= startingY - 0.75 then
+                table.insert(blocksDestroyed, blockName)
+            end
+        end
+        for _, blockName in blocksDestroyed do
+            self.yStarts[blockName] = nil
+        end
+        if #blocksDestroyed > 0 then
+            LeaderboardService:BlocksDestroyed(player, #blocksDestroyed)
+        end
+        if not next(self.yStarts) then
+            knockedOver:Disconnect()
+        end
+    end
+    knockedOver = RunService.Heartbeat:Connect(check)
 end
 
 function TargetPlatform:Destroy()
