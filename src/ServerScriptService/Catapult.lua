@@ -49,7 +49,7 @@ function Catapult.new(player: Player, cframe: CFrame)
 
     self.armature = self.platform.Catapult.Swivel.Armature
     self.launcherHinge = self.platform.Constraints.LauncherHinge
-    
+
     self.launchButton = self.platform.LaunchButton.button
     self.launchButton.ProximityPrompt.Triggered:Connect(function(...)
         self:Launch(...)
@@ -61,7 +61,7 @@ function Catapult.new(player: Player, cframe: CFrame)
     end)
 
     self.reloadAttachment = self.platform.Catapult.Swivel.Armature.Att_Reload
-    
+
     -- Init, connect triggers, and alias spring parts
     self.springTension = SPRING_TENSION_INITAL_VALUE
     self.springTensionButton = self.platform.SpringTensionButton
@@ -88,13 +88,13 @@ function Catapult.new(player: Player, cframe: CFrame)
         self:DecreaseReleaseAngle(...)
     end)
     self.releaseAngleConstraint = self.platform.Constraints.LauncherHinge
-    self.releaseAngleLabel = self.angleButton.Console.SurfaceGui.Frame.AngleLabel 
+    self.releaseAngleLabel = self.angleButton.Console.SurfaceGui.Frame.AngleLabel
 
     -- Other data
     self.payload = nil
     self.lastArmatureNetworkOwner = nil
     self.launchAttempts = 0
-    
+
     -- disable launch prompt as a ball has not been loaded
     self:EnableLaunchPrompt(false)
 
@@ -128,6 +128,9 @@ function Catapult:Unload()
     self.payload = nil
 
     self:EnableLaunchPrompt(false)
+    for _, projectileTemplate in self.projectiles do
+        projectileTemplate:EnableTrigger()
+    end
 
     catapultUnloadEvent:Fire()
 end
@@ -144,7 +147,7 @@ function Catapult:Load(projectile: Projectile.Type, player: Player)
     self.payload = Projectile.launchable(projectile, player, CFrame.new(self.reloadAttachment.WorldPosition), unloadFn)
 
     Workspace.Audio.Load:Play()
-    
+
     self:EnableLaunchPrompt(true)
     for _, projectileTemplate in self.projectiles do
         projectileTemplate:DisableTrigger()
@@ -157,7 +160,7 @@ function Catapult:SetNetworkOwnerForLaunch(player: Player)
         return
     end
     self.lastArmatureNetworkOwner = player
-    
+
     -- ensure the armature physics are handled by the players client
     self.armature:SetNetworkOwner(player)
 end
@@ -166,22 +169,22 @@ function Catapult:Launch(player: Player)
     if not self.payload then
         return
     end
-    
+
     -- disable launch prompt
     self:EnableLaunchPrompt(false)
-    
+
     -- for a smooth launch, ensure the player owns the related objects
     self:SetNetworkOwnerForLaunch(player)
-    
+
     -- Move payload to active projectiles
     self.payload:DisableTrigger()
 
     catapultLaunchEvent:Fire(self.payload, player)
-    
+
     -- remove torque to launch the catapult
     self.launcherHinge.MotorMaxTorque = 0
     Workspace.Audio.Launch:Play()
-    
+
     local launchedProjectile = self.payload
     self.payload = nil
 
@@ -190,8 +193,8 @@ function Catapult:Launch(player: Player)
         self.launcherHinge.MotorMaxTorque = MOTOR_MAX_TORQUE
     end)
     task.delay(ARMATURE_RESET_TIME, function()
-        for _, projectile in self.projectiles do
-            projectile:EnableTrigger()
+        for _, projectileTemplate in self.projectiles do
+            projectileTemplate:EnableTrigger()
         end
     end)
     task.delay(PROJECTILE_LIFETIME, function()

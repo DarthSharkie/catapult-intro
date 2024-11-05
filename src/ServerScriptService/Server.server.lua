@@ -76,13 +76,13 @@ end)
 targetPlatformResetEvent.Event:Connect(onTargetReset)
 
 --[[  TODO List
-1. [x]Allow for multiple spawns
+1. [x] Allow for multiple spawns
 2. Prevent overlapping catapult fire (4-6 per server to allow for enough range of motion)
    - [x] will need to limit catapult rotation
    - [x] will need to limit target platform theta
    - [x] Need to adjust position to ensure the entire platform is inside the slice
-3. [x]Detect targets knocked over (if they're still standing, it doesn't count)
-4. Save number of launches, number of targets "destroyed" to cloud
+3. [x] Detect targets knocked over (if they're still standing, it doesn't count)
+4. [x] Save number of launches, number of targets "destroyed" to cloud
 5. Consider badges/achievements for number of launches, number of targets
 6. Figure out how to fully-manage via Rojo... model export from studio didn't work
    - Need to `rojo build` and import from .rbxm file any time the MeshId properties change
