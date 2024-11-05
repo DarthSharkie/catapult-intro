@@ -1,0 +1,28 @@
+{
+    "ClassName": "SpawnLocation",
+    "properties": {
+        "Transparency": 0,
+        "Size": [12, 1, 12],
+        "CFrame": [0, 1, 0,
+                   -1, 0, 0,
+                   0, 1, 0,
+                   0, 0, -1],
+        "Anchored": true,
+        "CanCollide": true,
+        "CanTouch": true,
+        "Duration": 0
+    },
+    "Children": [
+        {
+            "Name": "Decal",
+            "ClassName": "Decal",
+            "Properties": {
+                "Color3": [1, 1, 1],
+                "Texture": "rbxasset://textures/SpawnLocation.png",
+                "Transparency": 0,
+                "ZIndex": 1,
+                "Face": "Top"
+            }
+        }
+    ]
+}

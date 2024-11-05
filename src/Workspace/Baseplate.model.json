@@ -1,0 +1,31 @@
+{
+    "ClassName": "Part",
+    "Properties": {
+        "Color": [0, 0, 0],
+        "Transparency": 1,
+        "Size": [1024, 1, 1024],
+        "CFrame": [0, 0.5, 0,
+                   1, 0, 0,
+                   0, 1, 0,
+                   0, 0, 1],
+        "Anchored": true,
+        "CanCollide": true,
+        "CanTouch": true,
+        "RootPriority": 0,
+        "Shape": "Block"
+    },
+    "Children": [
+        {
+            "Name": "Texture",
+            "ClassName": "Texture",
+            "Properties": {
+                "Color3": [0, 0, 0],
+                "Face": "Top",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Texture": "rbxassetid://6372755229",
+                "Transparency": 0.75
+            }
+        }
+    ]
+}
