@@ -42,7 +42,7 @@ function LeaderboardService:removePlayer(player: Player)
     shotsFiredValues[player.UserId] = nil
 end
 
-local function onCatapultLaunch(payload, player: Player)
+local function onCatapultLaunch(_payload, player: Player)
     shotsFiredValues[player.UserId].Value += 1
 end
 
