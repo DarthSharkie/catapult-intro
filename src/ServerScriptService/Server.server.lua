@@ -37,7 +37,7 @@ local function initialize(player: Player)
         end
     end)
 
-    local spawn: SpawnPool.Spawn = SpawnPool:Allocate(player)
+    local spawn: SpawnPool.Spawn = SpawnPool.Allocate(player)
     catapults[player.UserId] = Catapult.new(player, spawn.CFrame)
 
     targetPlatforms[player.UserId] = {
@@ -58,12 +58,12 @@ local function cleanup(player: Player)
         targetPlatform:Destroy()
     end
     LeaderboardService.removePlayer(player)
-    SpawnPool:Return(player)
+    SpawnPool.Return(player)
 end
 
 -- TODO: Figure out if there's a better way to have LB connect to Catapult launch
 LeaderboardService.Init()
-SpawnPool:Init()
+SpawnPool.Init()
 
 Players.PlayerAdded:Connect(function(player: Player)
     initialize(player)

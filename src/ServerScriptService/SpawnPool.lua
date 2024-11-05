@@ -16,7 +16,7 @@ local spawns = {}
 local TAU = math.pi * 2
 local dividers = {}
 
-function SpawnPool:Init()
+function SpawnPool.Init()
     local dividerFolder = Instance.new("Folder")
     dividerFolder.Name = "Dividers"
     dividerFolder.Parent = workspace
@@ -52,9 +52,9 @@ function SpawnPool:Init()
     end
 end
 
-function SpawnPool:Allocate(player: Player): Spawn
+function SpawnPool.Allocate(player: Player): Spawn
     local choice
-    repeat 
+    repeat
         choice = math.random(1, #spawns)
     until not spawns[choice].Owner
 
@@ -69,7 +69,7 @@ function SpawnPool:Allocate(player: Player): Spawn
     return spawns[choice]
 end
 
-function SpawnPool:Return(player: Player)
+function SpawnPool.Return(player: Player)
     for point = 1, SIZE do
         if spawns[point].Owner == player then
             spawns[point].Owner = nil
