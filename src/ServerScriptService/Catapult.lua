@@ -44,6 +44,7 @@ function Catapult.new(player: Player, cframe: CFrame)
 
     -- init other stuff here
     self.platform = ServerStorage.CatapultPlatform:Clone()
+    self.platform.Spawn.Decal.Transparency = 1
     self.platform:PivotTo(cframe)
     self.platform.Parent = Workspace.ActiveCatapultPlatforms
 
