@@ -1,0 +1,20 @@
+{
+    "ClassName": "ChatInputBarConfiguration",
+    "Properties": {
+        "AutocompleteEnabled": true,
+        "BackgroundColor3": [0.106, 0.165, 0.208],
+        "BackgroundTransparency": 0.2,
+        "Enabled": true,
+        "FontFace": {
+            "family": "rbxasset://fonts/families/BuilderSans.json",
+            "weight": "Medium",
+            "style": "Normal"
+        },
+        "KeyboardKeyCode": "Slash",
+        "PlaceholderColor3": [0.699, 0.699, 0.699],
+        "TextColor3": [1, 1, 1],
+        "TextSize": 18,
+        "TextStrokeColor3": [0, 0, 0],
+        "TextStrokeTransparency": 0.5
+    }
+}

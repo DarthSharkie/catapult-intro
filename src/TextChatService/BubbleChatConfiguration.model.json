@@ -1,0 +1,108 @@
+{
+    "ClassName": "BubbleChatConfiguration",
+    "Properties": {
+        "AdorneeName": "HumanoidRootPart",
+        "BackgroundColor3": [0.980, 0.980, 0.980],
+        "BackgroundTransparency": 0.1,
+        "BubbleDuration": 15,
+        "BubblesSpacing": 6,
+        "Enabled": true,
+        "FontFace": {
+            "family": "rbxasset://fonts/families/BuilderSans.json",
+            "weight": "Medium",
+            "style": "Normal"
+        },
+        "LocalPlayerStudsOffset": [0, 0, 0],
+        "MaxBubbles": 3,
+        "MaxDistance": 100,
+        "MinimizeDistance": 40,
+        "TailVisible": true,
+        "TextColor3": [0.224, 0.232, 0.240],
+        "TextSize": 20,
+        "VerticalStudsOffset": 0
+    },
+    "Children": [
+        {
+            "Name": "UICorner",
+            "ClassName": "UICorner",
+            "Properties": {
+                "CornerRadius": {"UDim": [0, 12]}
+            }
+        },
+        {
+            "Name": "UIGradient",
+            "ClassName": "UIGradient",
+            "Properties": {
+                "Color": {
+                    "ColorSequence": {
+        				"keypoints": [
+        					{"time": 0.0, "color": [1.0, 1.0, 1.0]},
+        					{"time": 1.0, "color": [1.0, 1.0, 1.0]}
+        				]
+        			}
+                },
+                "Enabled": false,
+                "Offset": [0, 0],
+                "Rotation": 0,
+                "Transparency": {
+                    "NumberSequence": {
+        				"keypoints": [
+        					{"time": 0.0, "value": 0.0, "envelope": 0.0},
+        					{"time": 1.0, "value": 0.0, "envelope": 0.0}
+        				]
+        			}
+                }
+            }
+        },
+        {
+            "Name": "UIPadding",
+            "ClassName": "UIPadding",
+            "Properties": {
+                "PaddingBottom": {"UDim": [0, 8]},
+                "PaddingLeft": {"UDim": [0, 8]},
+                "PaddingRight": {"UDim": [0, 8]},
+                "PaddingUp": {"UDim": [0, 8]}
+            }
+        },
+        {
+            "Name": "ImageLabel",
+            "ClassName": "ImageLabel",
+            "Properties": {
+                "ImageColor3": [1, 1, 1],
+                "ImageRectOffset": [0, 0],
+                "ImageRectSize": [0, 0],
+                "ImageTransparency": 0,
+                "ResampleMode": "Default",
+                "ScaleType": "Stretch",
+                "SliceCenter": {"Rect": [[0, 0], [0, 0]]},
+                "SliceScale": 1,
+                "TileSize": {"UDim2": [[1, 0], [1, 0]]},
+
+                "Active": false,
+                "AnchorPoint": [0, 0],
+                "AutomaticSize": "None",
+                "BackgroundColor3": [1, 1, 1],
+                "BackgroundTransparency": 0,
+                "BorderColor3": [0.106, 0.165, 0.208],
+                "BorderMode": "Outline",
+                "BorderSizePixel": 1,
+                "ClipsDescendants": false,
+                "Draggable": false,
+                "Interactable": true,
+                "LayoutOrder": 0,
+                "Position": {"UDim2": [[0, 0], [0, 0]]},
+                "Rotation": 0,
+                "Selectable": false,
+                "SelectionBehaviorDown": "Escape",
+                "SelectionBehaviorLeft": "Escape",
+                "SelectionBehaviorRight": "Escape",
+                "SelectionBehaviorUp": "Escape",
+                "SelectionOrder": 0,
+                "Size": {"UDim2": [[0, 100], [0, 100]]},
+                "SizeConstraint": "RelativeXY",
+                "Visible": true,
+                "ZIndex": 1
+            }
+        }
+    ]
+}

@@ -20,6 +20,10 @@
       "$className": "ServerStorage",
       "$path": "src/ServerStorage"
     },
+    "TextChatService": {
+      "$className": "TextChatService",
+      "$path": "src/TextChatService"
+    },
     "Workspace": {
       "$className": "Workspace",
       "$ignoreUnknownInstances": true,
