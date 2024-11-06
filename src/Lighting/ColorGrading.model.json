@@ -1,0 +1,7 @@
+{
+    "ClassName": "ColorGradingEffect",
+    "Properties": {
+        "TonemapperPreset": "Default",
+        "Enabled": true
+    }
+}
