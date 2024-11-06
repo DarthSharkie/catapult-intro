@@ -1,0 +1,271 @@
+{
+    "ClassName": "ScreenGui",
+    "Properties": {
+        "ClipToDeviceSafeArea": true,
+        "DisplayOrder": 0,
+        "IgnoreGuiInset": true,
+        "SafeAreaCompatibility": "FullscreenExtension",
+        "ScreenInsets": "DeviceSafeInsets",
+        "Enabled": true,
+        "ResetOnSpawn": true,
+        "ZIndexBehavior": "Sibling",
+        "AbsoluteSize": [800, 600]
+    },
+    "Children": [
+        {
+            "Name": "Dimmer",
+            "ClassName": "Frame",
+            "Properties": {
+                "Style": "Custom",
+                "Active": false,
+                "AnchorPoint": [0, 0],
+                "AutomaticSize": "None",
+                "BackgroundColor3": [0, 0, 0],
+                "BackgroundTransparency": 0,
+                "BorderColor3": [0, 0, 0],
+                "BorderMode": "Outline",
+                "BorderSizePixel": 0,
+                "ClipsDescendants": false,
+                "Draggable": false,
+                "GuiState": "Idle",
+                "Interactable": true,
+                "LayoutOrder": 0,
+                "Position": {"UDim2": [[0, 0], [0, 0]]},
+                "Rotation": 0,
+                "Selectable": false,
+                "SelectionBehaviorDown": "Stop",
+                "SelectionBehaviorLeft": "Stop",
+                "SelectionBehaviorRight": "Stop",
+                "SelectionBehaviorUp": "Stop",
+                "SelectionOrder": 0,
+                "Size": {"UDim2": [[1, 0], [1, 0]]},
+                "SizeConstraint": "RelativeXY",
+                "Visible": true,
+                "ZIndex": 1
+            },
+            "Children": [
+                {
+                    "Name": "HeaderText",
+                    "ClassName": "TextLabel",
+                    "Properties": {
+                        "FontFace": {
+                            "family": "rbxasset://fonts/families/Ubuntu.json",
+                            "weight": "Bold",
+                            "style": "Normal"
+                        },
+                        "LineHeight": 1,
+                        "MaxVisibleGraphemes": -1,
+                        "OpenTypeFeatures": "",
+                        "RichText": false,
+                        "Text": "COMPLETE!",
+                        "TextColor3": [1, 1, 1],
+                        "TextDirection": "Auto",
+                        "TextScaled": true,
+                        "TextSize": 14,
+                        "TextTransparency": 0,
+                        "TextTruncate": "None",
+                        "TextWrapped": true,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+
+                        "Active": false,
+                        "AnchorPoint": [0.5, 0.5],
+                        "AutomaticSize": "None",
+                        "BackgroundColor3": [1, 1, 1],
+                        "BackgroundTransparency": 1,
+                        "BorderColor3": [0, 0, 0],
+                        "BorderMode": "Outline",
+                        "BorderSizePixel": 0,
+                        "ClipsDescendants": false,
+                        "Draggable": false,
+                        "GuiState": "Idle",
+                        "Interactable": true,
+                        "LayoutOrder": 0,
+                        "Position": {"UDim2": [[0.5, 0], [0.15, 0]]},
+                        "Rotation": 0,
+                        "Selectable": false,
+                        "SelectionBehaviorDown": "Stop",
+                        "SelectionBehaviorLeft": "Stop",
+                        "SelectionBehaviorRight": "Stop",
+                        "SelectionBehaviorUp": "Stop",
+                        "SelectionOrder": 0,
+                        "Size": {"UDim2": [[0.8, 0], [0.2, 0]]},
+                        "SizeConstraint": "RelativeXY",
+                        "Visible": true,
+                        "ZIndex": 1
+                    },
+                    "Children": [
+                        {
+                            "Name": "UIStroke",
+                            "ClassName": "UIStroke",
+                            "Properties": {
+                                "ApplyStrokeMode": "Contextual",
+                                "Color": [0, 0, 0],
+                                "Enabled": true,
+                                "LineJoinMode": "Round",
+                                "Thickness": 5,
+                                "Transparency": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "Name": "BodyText",
+                    "ClassName": "TextLabel",
+                    "Properties": {
+                        "FontFace": {
+                            "family": "rbxasset://fonts/families/Ubuntu.json",
+                            "weight": "Bold",
+                            "style": "Normal"
+                        },
+                        "LineHeight": 1,
+                        "MaxVisibleGraphemes": -1,
+                        "OpenTypeFeatures": "",
+                        "RichText": false,
+                        "Text": "You've completed Intro to Studio!",
+                        "TextColor3": [1, 1, 1],
+                        "TextDirection": "Auto",
+                        "TextScaled": true,
+                        "TextSize": 14,
+                        "TextTransparency": 0,
+                        "TextTruncate": "None",
+                        "TextWrapped": true,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+
+                        "Active": false,
+                        "AnchorPoint": [0.5, 0.5],
+                        "AutomaticSize": "None",
+                        "BackgroundColor3": [1, 1, 1],
+                        "BackgroundTransparency": 1,
+                        "BorderColor3": [0, 0, 0],
+                        "BorderMode": "Outline",
+                        "BorderSizePixel": 0,
+                        "ClipsDescendants": false,
+                        "Draggable": false,
+                        "GuiState": "Idle",
+                        "Interactable": true,
+                        "LayoutOrder": 0,
+                        "Position": {"UDim2": [[0.5, 0], [0.5, 0]]},
+                        "Rotation": 0,
+                        "Selectable": false,
+                        "SelectionBehaviorDown": "Stop",
+                        "SelectionBehaviorLeft": "Stop",
+                        "SelectionBehaviorRight": "Stop",
+                        "SelectionBehaviorUp": "Stop",
+                        "SelectionOrder": 0,
+                        "Size": {"UDim2": [[0.8, 0], [0.3, 0]]},
+                        "SizeConstraint": "RelativeXY",
+                        "Visible": true,
+                        "ZIndex": 1
+
+                    },
+                    "Children": [
+                        {
+                            "Name": "UIStroke",
+                            "ClassName": "UIStroke",
+                            "Properties": {
+                                "ApplyStrokeMode": "Contextual",
+                                "Color": [0, 0, 0],
+                                "Enabled": true,
+                                "LineJoinMode": "Round",
+                                "Thickness": 5,
+                                "Transparency": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "Name": "ResetButton",
+                    "ClassName": "TextButton",
+                    "Properties": {
+                        "FontFace": {
+                            "family": "rbxasset://fonts/families/Ubuntu.json",
+                            "weight": "Bold",
+                            "style": "Normal"
+                        },
+                        "LineHeight": 1,
+                        "MaxVisibleGraphemes": -1,
+                        "OpenTypeFeatures": "",
+                        "RichText": false,
+                        "Text": "RESET",
+                        "TextColor3": [0, 0, 0],
+                        "TextDirection": "Auto",
+                        "TextScaled": true,
+                        "TextSize": 30,
+                        "TextStrokeColor3": [0, 0, 0],
+                        "TextStrokeTransparency": 1,
+                        "TextTransparency": 0,
+                        "TextTruncate": "None",
+                        "TextWrapped": true,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+
+                        "AutoButtonColor": true,
+                        "Modal": false,
+                        "Selected": false,
+                        "Style": "Custom",
+
+                        "Active": false,
+                        "AnchorPoint": [0.5, 0.5],
+                        "AutomaticSize": "None",
+                        "BackgroundColor3": [0.035, 0.694, 0],
+                        "BackgroundTransparency": 0,
+                        "BorderColor3": [0, 0, 0],
+                        "BorderMode": "Outline",
+                        "BorderSizePixel": 0,
+                        "ClipsDescendants": false,
+                        "Draggable": false,
+                        "GuiState": "Idle",
+                        "Interactable": true,
+                        "LayoutOrder": 0,
+                        "Position": {"UDim2": [[0.5, 0], [0.8, 0]]},
+                        "Rotation": 0,
+                        "Selectable": false,
+                        "SelectionBehaviorDown": "Stop",
+                        "SelectionBehaviorLeft": "Stop",
+                        "SelectionBehaviorRight": "Stop",
+                        "SelectionBehaviorUp": "Stop",
+                        "SelectionOrder": 0,
+                        "Size": {"UDim2": [[0.2, 0], [0.1, 0]]},
+                        "SizeConstraint": "RelativeXY",
+                        "Visible": true,
+                        "ZIndex": 1
+                    },
+                    "Children": [
+                        {
+                            "Name": "UICorner",
+                            "ClassName": "UICorner",
+                            "Properties": {
+                                "CornerRadius": {"UDim": [0.2, 8]}
+                            }
+                        },
+                        {
+                            "Name": "UIPadding",
+                            "ClassName": "UIPadding",
+                            "Properties": {
+                                "PaddingBottom": {"UDim": [0.1, 0]},
+                                "PaddingLeft": {"UDim": [0.15, 0]},
+                                "PaddingRight": {"UDim": [0.15, 0]},
+                                "PaddingUp": {"UDim": [0.1, 0]}
+                            }
+                        },
+                        {
+                            "Name": "UIStroke",
+                            "ClassName": "UIStroke",
+                            "Properties": {
+                                "ApplyStrokeMode": "Border",
+                                "Color": [0, 0, 0],
+                                "Enabled": true,
+                                "LineJoinMode": "Round",
+                                "Thickness": 5,
+                                "Transparency": 0
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+}
