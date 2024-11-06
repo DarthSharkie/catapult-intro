@@ -1,7 +1,7 @@
 {
     "ClassName": "SpawnLocation",
     "properties": {
-        "Transparency": 0,
+        "Transparency": 1,
         "Size": [12, 1, 12],
         "CFrame": [0, 1, 0,
                    -1, 0, 0,
@@ -19,7 +19,7 @@
             "Properties": {
                 "Color3": [1, 1, 1],
                 "Texture": "rbxasset://textures/SpawnLocation.png",
-                "Transparency": 0,
+                "Transparency": 1,
                 "ZIndex": 1,
                 "Face": "Top"
             }
