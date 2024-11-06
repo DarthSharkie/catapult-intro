@@ -87,8 +87,7 @@ targetPlatformResetEvent.Event:Connect(onTargetReset)
 3. [x] Detect targets knocked over (if they're still standing, it doesn't count)
 4. [x] Save number of launches, number of targets "destroyed" to cloud
 5. Consider badges/achievements for number of launches, number of targets
-6. Figure out how to fully-manage via Rojo... model export from studio didn't work
-   - Need to `rojo build` and import from .rbxm file any time the MeshId properties change
+6. [x] Figure out how to fully-manage via Rojo... model export from studio didn't work
 7. Think about progression: is it multiple cats?  more powerful cat?  more sophisticated targets?  Skill tree?
    - new projectile?  bola? explosive? multi-ball?
    - new cats?  trebuchet?  ballista?
@@ -101,4 +100,8 @@ targetPlatformResetEvent.Event:Connect(onTargetReset)
    - Auto-fire?
 9. Misc improvements
    - cylindrical bounding box detection for platforms (as long as they're cylinders)
+   - [x] fully manage the ReplicatedStorage folder (GUI)
+   - [x] fully manage the TextChatService folder
+   - Figure out `rojo build` and .rbxm import any time the MeshId properties change
+   - Figure out managing Terrain via *.rbxl.
 ]]

@@ -9,7 +9,7 @@ export type Spawn = {
     Index: number,
 }
 
-SpawnPool.SIZE = 6
+SpawnPool.SIZE = 8
 local SIZE = SpawnPool.SIZE
 local R_DISTANCE = 90
 local spawns = {}
@@ -67,7 +67,7 @@ function SpawnPool.Allocate(player: Player): Spawn
 
     dividers[choice].Parent = workspace.Dividers
     -- Ternary nastiness, but should be safe here since these numbers won't be falsy
-    local rightDividerIndex = (choice == 6) and 1 or choice + 1
+    local rightDividerIndex = (choice == SIZE) and 1 or choice + 1
     dividers[rightDividerIndex].Parent = workspace.Dividers
 
     return spawns[choice]
@@ -77,11 +77,11 @@ function SpawnPool.Return(player: Player)
     for point = 1, SIZE do
         if spawns[point].Owner == player then
             spawns[point].Owner = nil
-            local leftNeighborIndex = (point == 1) and 6 or point - 1  -- ternary
+            local leftNeighborIndex = (point == 1) and SIZE or point - 1  -- ternary
             if spawns[leftNeighborIndex].Owner == nil then
                 dividers[point].Parent = ServerStorage.Dividers
             end
-            local rightNeighborIndex = (point == 6) and 1 or point + 1  -- ternary
+            local rightNeighborIndex = (point == SIZE) and 1 or point + 1  -- ternary
             if spawns[rightNeighborIndex].Owner == nil then
                 dividers[rightNeighborIndex].Parent = ServerStorage.Dividers
             end
