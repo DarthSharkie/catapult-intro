@@ -1,10 +1,9 @@
 {
-  "name": "project",
+  "name": "DarthSharkie's Catapult Intro",
   "servePort": 2282,
   "tree": {
     "$className": "DataModel",
     "Lighting": {
-      "$className": "Lighting",
       "$path": "src/Lighting"
     },
     "ReplicatedStorage": {
