@@ -5,6 +5,7 @@ local RunService = game:GetService("RunService")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
+local Geometry = require(ServerScriptService:WaitForChild("Geometry"))
 local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
 local SpawnPool = require(game:GetService("ServerScriptService"):WaitForChild("SpawnPool"))
 
@@ -25,14 +26,10 @@ local TARGET_HEIGHT_RANGE = {5, 22}
 local TARGET_DEPTH = 2
 local TARGET_PLATFORM_PADDING = Vector3.new(4, TARGET_HEIGHT_RANGE[2], 4)
 
-type BoundingBox = {
-    center: Vector3,
-    size: Vector3,
-}
+local count = 0
 
 local TargetPlatform = {}
 TargetPlatform.__index = TargetPlatform
-TargetPlatform.count = 0
 
 function TargetPlatform.new(player: Player, slice: number)
     local self = setmetatable({}, TargetPlatform)
@@ -41,8 +38,8 @@ function TargetPlatform.new(player: Player, slice: number)
     self.slice = slice
 
     self.platform = ServerStorage.TargetPlatform:Clone()
-    TargetPlatform.count += 1
-    self.platform.Name = "TP" .. TargetPlatform.count
+    count += 1
+    self.platform.Name = "TP" .. count
     self:SelectPosition()
     self.platform.Parent = Workspace.ActiveTargetPlatforms
 
@@ -69,18 +66,6 @@ function TargetPlatform:Reset(player: Player)
     self:SelectPosition()
     self.platform.Parent = Workspace.ActiveTargetPlatforms
     self:SetupTargets(player)
-end
-
-local function doBoxesIntersect(boxA: BoundingBox, boxB: BoundingBox): boolean
-    local dx = math.abs(boxA.center.X - boxB.center.X)
-    local dy = math.abs(boxA.center.Y - boxB.center.Y)
-    local dz = math.abs(boxA.center.Z - boxB.center.Z)
-
-    local combinedHalfSizeX = (boxA.size.X + boxB.size.X) / 2
-    local combinedHalfSizeY = (boxA.size.Y + boxB.size.Y) / 2
-    local combinedHalfSizeZ = (boxA.size.Z + boxB.size.Z) / 2
-
-    return dx <= combinedHalfSizeX and dy <= combinedHalfSizeY and dz <= combinedHalfSizeZ
 end
 
 function TargetPlatform:SelectPosition()
@@ -110,12 +95,13 @@ function TargetPlatform:SelectPosition()
         -- Pad the platform assuming dimensions of target parts
         size += TARGET_PLATFORM_PADDING
 
-        local newBox = {center = center, size = size}
+        local newCylinder = {center = center, radius = size.X / 2, height = size.Y}
         for _, existingPlatform in Workspace.ActiveTargetPlatforms:GetChildren() do
             if self.platform ~= existingPlatform then
                 local existingCFrame: CFrame, existingSize = existingPlatform:GetBoundingBox()
-                local existingBox = {center = existingCFrame.Position, size = existingSize}
-                collision = doBoxesIntersect(existingBox, newBox)
+                local existingCylinder = {center = existingCFrame.Position, radius = existingSize.X / 2, height = existingSize.Y}
+                collision = Geometry.doCylindersIntersect(existingCylinder, newCylinder)
+                print(collision)
                 if collision then break end
             end
         end
