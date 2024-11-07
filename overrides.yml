@@ -1,0 +1,5 @@
+---
+globals:
+  require:
+    args:
+    - type: string
