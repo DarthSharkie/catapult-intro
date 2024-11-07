@@ -1,0 +1,19 @@
+{
+    "ClassName": "ChannelTabsConfiguration",
+    "Properties": {
+        "BackgroundColor3": [0.099, 0.106, 0.114],
+        "BackgroundTransparency": 0,
+        "Enabled": false,
+        "FontFace": {
+            "family": "rbxasset://fonts/families/BuilderSans.json",
+            "weight": "Bold",
+            "style": "Normal"
+        },
+        "HoverBackgroundColor3": [0.491, 0.491, 0.491],
+        "SelectedTabTextColor3": [1, 1, 1],
+        "TextColor3": [0.687, 0.687, 0.687],
+        "TextSize": 18,
+        "TextStrokeColor3": [0, 0, 0],
+        "TextStrokeTransparency": 1
+    }
+}
