@@ -6,6 +6,7 @@ local Catapult = require(ServerScriptService:WaitForChild("Catapult"))
 local TargetPlatform = require(ServerScriptService:WaitForChild("TargetPlatform"))
 local LeaderboardService = require(ServerScriptService:WaitForChild("LeaderboardService"))
 local SpawnPool = require(ServerScriptService:WaitForChild("SpawnPool"))
+local Lighting = require(ServerScriptService:WaitForChild("Lighting"))
 
 -- events
 local targetPlatformResetEvent = ServerScriptService:WaitForChild("TargetPlatformResetEvent")
@@ -67,6 +68,9 @@ end
 -- TODO: Figure out if there's a better way to have LB connect to Catapult launch
 LeaderboardService.Init()
 SpawnPool.Init()
+
+-- Lighting needs to be in a separate thread
+coroutine.wrap(Lighting.tick)()
 
 Players.PlayerAdded:Connect(function(player: Player)
     initialize(player)
